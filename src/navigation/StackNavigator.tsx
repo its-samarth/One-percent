@@ -1,8 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import SplashScreen from '../screens/splashscreen';
-import StockList from '../components/StockList';
-import Bottom from '../screens/BottomScreen';
-import HomeScreen from '../screens/HomeScreen';
+import StockList from '../screens/StockList';
+
 import DescriptionScreen from '../screens/DescriptionScreen';
 import OrdersScreen from '../screens/OrdersScreen';
 
@@ -15,7 +14,6 @@ export default function MyStack() {
         headerShown: false, 
       }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="List" component={StockList} />
         <Stack.Screen name="Description" component={DescriptionScreen} />
         <Stack.Screen name="Orders" component={OrdersScreen} />

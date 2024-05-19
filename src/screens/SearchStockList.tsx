@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
 import { fetchStockData } from '../api-handlers/api';
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import CompanyLogo from './CompanyLogo';
+
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowDown, faArrowUp, faCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack/types';
+import CompanyLogo from '../components/CompanyLogo';
 
 const SearchStockList = ({ query }: { query: string }) => {
   const [stocks, setStocks] = useState([]);
@@ -174,9 +175,9 @@ const styles = StyleSheet.create({
     
   },
   logoContainer: {
-    width: 80, // Adjust the width as needed
+    width: 80, 
     marginRight: 20,
-    justifyContent: 'center', // Center the logo vertically
+    justifyContent: 'center', 
   },
   textContainer: {
     flex: 1,

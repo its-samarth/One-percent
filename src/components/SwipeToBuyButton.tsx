@@ -4,7 +4,7 @@ import Animated, { useSharedValue, withSpring, useAnimatedStyle } from 'react-na
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowRight, faCheck, faRotateRight, faTimes } from '@fortawesome/free-solid-svg-icons';
-import notifee from '@notifee/react-native'; // Import Notifee
+import notifee from '@notifee/react-native'; 
 
 const SwipeToBuyButton = (Stockticker) => {
   const translateX = useSharedValue(0);
@@ -54,7 +54,7 @@ const SwipeToBuyButton = (Stockticker) => {
   };
 
  
-  async function onDisplayNotification(ticker) {
+  async function onDisplayNotification(ticker:any) {
     await notifee.requestPermission();
   
     const channelId = await notifee.createChannel({

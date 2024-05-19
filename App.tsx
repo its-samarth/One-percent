@@ -4,7 +4,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import MyStack from './src/navigation/StackNavigator';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import StockList from './src/components/StockList';
+import StockList from './src/screens/StockList';
 import { Provider } from 'react-redux';
 import { MyStore } from './src/redux/Store';
 

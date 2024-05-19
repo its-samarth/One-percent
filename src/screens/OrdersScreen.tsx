@@ -12,15 +12,15 @@ import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/n
 import { useNavigation } from '@react-navigation/native';
 
 const OrdersScreen = () => {
-  // Assuming 'orders' is an object containing the 'products' array
+  // 'orders' is an object containing the 'products' array
   const { products } = useSelector((state: RootState) => state.product);
   console.log(products);
   
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const dispatch=useDispatch();
-  const handleDeleteOrder = (productId) => {
+  const handleDeleteOrder = (productId:String) => {
     dispatch(deleteProduct(productId)); // Dispatch the deleteProduct action with the item ID
-    // Optionally, you can navigate back to the Orders screen after deletion
+    //  you can navigate back to the Orders screen after deletion
     navigation.navigate('Orders' as never);
   };
   const renderItem = ({ item }: { item: any }) => (

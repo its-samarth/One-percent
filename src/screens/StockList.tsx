@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 
 import BottomSheet, {BottomSheetFlatList} from '@gorhom/bottom-sheet';
-import CompanyLogo from './CompanyLogo';
-import SearchBar from './SearchBar';
+import CompanyLogo from '../components/CompanyLogo';
+import SearchBar from '../components/SearchBar';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
@@ -21,11 +21,12 @@ import {
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 import {fetchMarketTrends} from '../api-handlers/api';
-import SearchStockList from './SearchStockList';
-import SwipeToBuyButton from './SwipeToBuyButton';
+
+import SwipeToBuyButton from '../components/SwipeToBuyButton';
 import {useNavigation} from '@react-navigation/native';
 import _ from 'lodash';
 import {NativeStackNavigationProp} from 'react-native-screens/lib/typescript/native-stack/types';
+import SearchStockList from './SearchStockList';
 
 const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 const ITEMS_PER_PAGE = 5;
@@ -292,9 +293,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   logoContainer: {
-    width: 80, // Adjust the width as needed
+    width: 80, 
     marginRight: 20,
-    justifyContent: 'center', // Center the logo vertically
+    justifyContent: 'center',
   },
   textContainer: {
     flex: 1,
@@ -326,36 +327,3 @@ const styles = StyleSheet.create({
 });
 
 export default StockList;
-
-{
-  /*searchQuery !== '' && (
-          <>
-        <BottomSheetFlatList
-          data={currentStocks}
-          renderItem={renderItem}
-          keyExtractor={item => item.ticker}
-          contentContainerStyle={styles.bottomSheetContent}
-        />
-        <View style={styles.pagination}>
-          <Button
-            title="Previous"
-            onPress={handlePrevPage}
-            disabled={currentPage === 0}
-          />
-          <Text>
-            Page {currentPage + 1} of {totalPages}
-          </Text>
-          <Button
-            title="Next"
-            onPress={handleNextPage}
-            disabled={currentPage === totalPages - 1}
-          />
-        </View>
-          </>
-        )*/
-}
-{
-  /*
-        
-        */
-}
