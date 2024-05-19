@@ -3,13 +3,15 @@ import { View, Text, StyleSheet } from 'react-native';
 import CompanyLogo from '../components/CompanyLogo';
 import SwipeToBuyButton from '../components/SwipeToBuyButton';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
-const DescriptionScreen = ({ route }) => {
+const DescriptionScreen = ({ route }: { route: any }) => {
   // Extract the item passed as a prop
   const { item } = route.params;
   const title="Lorem ipsum dolor"
    const lorem="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvinar nisl vel posuere lacinia."
-    
+    const navigation=useNavigation();
+
    
   return (
     <View style={styles.container}>
@@ -24,9 +26,9 @@ const DescriptionScreen = ({ route }) => {
         <Text style={styles.bold}>${item.price}</Text>
         <Text style={styles.bold}>{title}</Text> 
         <Text style={styles.smallbold}>{lorem}</Text>    
-        <SwipeToBuyButton ticker={item.ticker}/>   
+         
         <View style={{flex:1, justifyContent: 'flex-end',alignItems: 'center',marginBottom:200}}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('Orders'as never)}>
       <Text style={styles.buttonText}>Add to Order</Text>
     </TouchableOpacity>
     </View>

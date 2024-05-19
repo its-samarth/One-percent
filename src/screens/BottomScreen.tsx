@@ -13,7 +13,7 @@ const BottomSheetComponent = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => sheetRef.current.snapToIndex(0)}>
+      <TouchableOpacity onPress={() => sheetRef.current?.snapToIndex(0)}>
         <Text>Open Bottom Sheet</Text>
         
       </TouchableOpacity>

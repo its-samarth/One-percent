@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useCallback} from 'react';
 import {
   View,
   Text,
@@ -19,6 +19,8 @@ import {fetchMarketTrends} from '../api-handlers/api';
 import SearchStockList from './SearchStockList';
 import SwipeToBuyButton from './SwipeToBuyButton';
 import { useNavigation } from '@react-navigation/native';
+import _ from 'lodash';
+import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack/types';
 
 const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 const ITEMS_PER_PAGE = 5;
@@ -29,13 +31,14 @@ const lorem="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvin
 
 
 const StockList = () => {
-  const [stocks, setStocks] = useState([]);
+  const [stocks, setStocks] = useState<any[]>([]);
   const [filteredStocks, setFilteredStocks] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchedStocks,setSearchedStocks]= useState([]);
   const [expandedItem, setExpandedItem] = useState(null);
+  const [debouncedQuery, setDebouncedQuery] = useState('');
 
   const sheetRef = useRef(null);
   useEffect(() => {
@@ -44,8 +47,8 @@ const StockList = () => {
         const response = await fetchMarketTrends();
         const data = response?.data?.trends || [];
         const stockData = data
-          .filter(trend => trend.type === 'stock')
-          .map(trend => ({
+          .filter((trend: any) => trend.type === 'stock') 
+          .map((trend: any) => ({ 
             name: trend.name,
             ticker: trend.symbol.split(':')[0],
             fullName: trend.name,
@@ -76,27 +79,30 @@ const StockList = () => {
     }
   };
 
-  const handleSearch = query => {
-    setSearchQuery(query);
-    const filtered = stocks.filter(
-      stock =>
-        stock.name.toLowerCase().includes(query.toLowerCase()) ||
-        stock.ticker.toLowerCase().includes(query.toLowerCase()),
-    );
-    setFilteredStocks(filtered);
-    setCurrentPage(0); // Reset pagination to the first page when searching
-  };
 
-  const handleSearchChange = text => {
+
+   // Debounced search function
+   const handleSearchChange = useCallback(
+    _.debounce((query) => {
+      setDebouncedQuery(query);
+    }, 2000),
+    []
+  );
+
+  const onChangeText = (text:any) => {
     setSearchQuery(text);
+    handleSearchChange(text);
+    console.log(text);
+    
   };
 
+  
   const currentStocks = filteredStocks.slice(
     currentPage * ITEMS_PER_PAGE,
     (currentPage + 1) * ITEMS_PER_PAGE,
   );
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: { item: any }) => (
     <View>
     <TouchableOpacity
       style={styles.item}
@@ -105,7 +111,7 @@ const StockList = () => {
     >
       
       <View style={styles.logoContainer}>
-        <CompanyLogo symbol={item.ticker} />
+      <CompanyLogo symbol={item.ticker} />
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.ticker}>{item.ticker}</Text>
@@ -134,26 +140,31 @@ const StockList = () => {
     </View>
   );
   
-  const navigation= useNavigation();
-  const handleSingleClick = (item) => {
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const handleSingleClick = (item:any) => {
     console.log(`Single click on ${item.ticker}`);
     navigation.navigate('Description',{item})
   };
   
-  const handleLongPress = (item) => {
+  const handleLongPress = (item: { ticker: null; }) => {
     console.log(`Long press on ${item.ticker}`);
     setExpandedItem((prevItem) => prevItem === item.ticker ? null : item.ticker);
   };
   
   return (
     <View style={styles.container}>
-      <Button
-        title="Open Bottom Sheet"
-        onPress={() => sheetRef.current.snapToIndex(0)}
-      />
+      <TouchableOpacity
+  onPress={() => sheetRef.current.snapToIndex(0)}
+  style={{ backgroundColor: 'black',borderRadius:20, borderColor: '#fff5d1', padding: 10, alignItems: 'center' }}
+>
+  <Text style={{ color: 'white', fontSize: 18 }}>Open Bottom Sheet</Text>
+</TouchableOpacity>
+
+
+
       
       
-      <SwipeToBuyButton/>
+  
   
       <BottomSheet
         ref={sheetRef}
@@ -168,8 +179,8 @@ const StockList = () => {
           </TouchableOpacity>
           <TextInput
             style={styles.input}
-            placeholder="Search  for Stocks"
-            onChangeText={handleSearchChange}
+            placeholder="Search for Stocks"
+            onChangeText={onChangeText}
           />
         </View>
         
@@ -200,8 +211,9 @@ const StockList = () => {
             </View>
           </>
         )}
-  
-       
+        {searchQuery !== '' && (
+        <SearchStockList query={debouncedQuery} />
+      )}
         
       </BottomSheet>
     </View>

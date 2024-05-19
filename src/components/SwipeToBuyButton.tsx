@@ -6,14 +6,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowRight, faCheck, faRotateRight, faTimes } from '@fortawesome/free-solid-svg-icons';
 import notifee from '@notifee/react-native'; // Import Notifee
 
-const SwipeToBuyButton = (Stockticker) => {
+const SwipeToBuyButton = (Stockticker:any) => {
   const translateX = useSharedValue(0);
   const buttonWidth = 300;
   const releaseThreshold = 0.7; // 70% threshold
   const [buttonText, setButtonText] = useState('Swipe to Buy');
   const [buttonReleased, setButtonReleased] = useState(false);
 
-  const gestureHandler = (event) => {
+  const gestureHandler = (event:any) => {
     translateX.value = event.nativeEvent.translationX;
   };
 

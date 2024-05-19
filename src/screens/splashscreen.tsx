@@ -1,15 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack/types';
 import Svg, { Text, Rect, LinearGradient, Stop } from 'react-native-svg';
 
 
 const SplashScreen = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   useEffect(() => {
     setTimeout(() => {
-        navigation.replace('List');// Navigate to the main screen
+        navigation.replace('List' as never);// Navigate to the main screen
       console.log('Navigate to main screen');
     }, 2000);
   }, [navigation]);
