@@ -168,7 +168,7 @@ const StockList = () => {
           </TouchableOpacity>
           <TextInput
             style={styles.input}
-            placeholder="Search for Stocks"
+            placeholder="Search  for Stocks"
             onChangeText={handleSearchChange}
           />
         </View>
