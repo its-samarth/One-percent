@@ -12,7 +12,7 @@ import {
 import BottomSheet, {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import CompanyLogo from './CompanyLogo';
 import SearchBar from './SearchBar';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faArrowUp, faSearch} from '@fortawesome/free-solid-svg-icons';
 import {fetchMarketTrends} from '../api-handlers/api';
@@ -152,6 +152,7 @@ const StockList = () => {
         onPress={() => sheetRef.current.snapToIndex(0)}
       />
       
+      
       <SwipeToBuyButton/>
   
       <BottomSheet
@@ -171,6 +172,7 @@ const StockList = () => {
             onChangeText={handleSearchChange}
           />
         </View>
+        
   
         {searchQuery === '' && (
           <>

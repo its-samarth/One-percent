@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import CompanyLogo from '../components/CompanyLogo';
 import SwipeToBuyButton from '../components/SwipeToBuyButton';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const DescriptionScreen = ({ route }) => {
   // Extract the item passed as a prop
@@ -23,7 +24,12 @@ const DescriptionScreen = ({ route }) => {
         <Text style={styles.bold}>${item.price}</Text>
         <Text style={styles.bold}>{title}</Text> 
         <Text style={styles.smallbold}>{lorem}</Text>    
-        <SwipeToBuyButton/>   
+        <SwipeToBuyButton ticker={item.ticker}/>   
+        <View style={{flex:1, justifyContent: 'flex-end',alignItems: 'center',marginBottom:200}}>
+        <TouchableOpacity style={styles.button}>
+      <Text style={styles.buttonText}>Add to Order</Text>
+    </TouchableOpacity>
+    </View>
       </View>
     </View>
   );
@@ -70,6 +76,21 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 18,
+  },
+  button: {
+    backgroundColor: '#FFF5D1',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 25,
+    elevation: 5,
+    width: 300,
+    alignItems: 'center',
+    marginTop: 'auto', 
+  },
+  buttonText: {
+    color: 'black',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 

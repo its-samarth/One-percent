@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowRight, faCheck, faRotateRight, faTimes } from '@fortawesome/free-solid-svg-icons';
 import notifee from '@notifee/react-native'; // Import Notifee
 
-const SwipeToBuyButton = () => {
+const SwipeToBuyButton = (Stockticker) => {
   const translateX = useSharedValue(0);
   const buttonWidth = 300;
   const releaseThreshold = 0.7; // 70% threshold
@@ -62,11 +62,12 @@ const SwipeToBuyButton = () => {
       id: 'default',
       name: 'Default Channel',
     });
-
-  
+    
+    console.log(Stockticker);
+    
     await notifee.displayNotification({
       title: 'Stock Purchased',
-      body: 'Your Purchase Order for {Stock Ticket} is completed',
+      body: 'Your Purchase Order for ${Stock Ticket} is completed',
       android: {
         channelId,
      
