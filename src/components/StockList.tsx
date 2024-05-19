@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingVertical: 20,
     paddingHorizontal: 10,
-    elevation: 2, // Add elevation for shadow effect
+    elevation: 2, 
   },
   input: {
     flex: 1,
