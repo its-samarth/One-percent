@@ -8,17 +8,25 @@ import {
   Animated,
   Dimensions,
 } from 'react-native';
-import {fetchMarketTrends} from './Trial';
+
 import BottomSheet, {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import CompanyLogo from './CompanyLogo';
 import SearchBar from './SearchBar';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faSearch} from '@fortawesome/free-solid-svg-icons';
+import {faArrowUp, faSearch} from '@fortawesome/free-solid-svg-icons';
+import {fetchMarketTrends} from '../api-handlers/api';
+import SearchStockList from './SearchStockList';
+import SwipeToBuyButton from './SwipeToBuyButton';
+import { useNavigation } from '@react-navigation/native';
 
 const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 const ITEMS_PER_PAGE = 5;
 const snapPoints = [SCREEN_HEIGHT * 0.6, SCREEN_HEIGHT];
+const title="Lorem ipsum dolor"
+const lorem="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvinar nisl vel posuere lacinia."
+
+
 
 const StockList = () => {
   const [stocks, setStocks] = useState([]);
@@ -26,32 +34,10 @@ const StockList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchedStocks,setSearchedStocks]= useState([]);
+  const [expandedItem, setExpandedItem] = useState(null);
 
   const sheetRef = useRef(null);
-
-  const handleSheetChange = ({index}) => {
-    setShowSearchBar(index === 1);
-    console.log('Bottom sheet index:', index);
-  };
-
-  /*
-  const symbol = "gotu";
-
-fetch(`https://cloud.iexapis.com/stable/stock/${symbol}/logo?token=pk_6c918710ba114116a227559b2a1a8a9f`)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log(JSON.stringify(data));
-  })
-  .catch(error => {
-    console.error('Error fetching logo:', error);
-  });
-  */
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -110,8 +96,14 @@ fetch(`https://cloud.iexapis.com/stable/stock/${symbol}/logo?token=pk_6c918710ba
     (currentPage + 1) * ITEMS_PER_PAGE,
   );
 
-  const renderItem = ({item}) => (
-    <View style={styles.item}>
+  const renderItem = ({ item }) => (
+    <View>
+    <TouchableOpacity
+      style={styles.item}
+      onPress={() => handleSingleClick(item)}
+      onLongPress={() => handleLongPress(item)}
+    >
+      
       <View style={styles.logoContainer}>
         <CompanyLogo symbol={item.ticker} />
       </View>
@@ -119,72 +111,100 @@ fetch(`https://cloud.iexapis.com/stable/stock/${symbol}/logo?token=pk_6c918710ba
         <Text style={styles.ticker}>{item.ticker}</Text>
         <Text style={styles.name}>{item.name}</Text>
         <Text style={styles.price}>Price: ${item.price}</Text>
-      </View>
+        </View>
+       <View>
+       {expandedItem === item.ticker && (
+        <TouchableOpacity onPress={() => handleLongPress(item)}>
+            <FontAwesomeIcon icon={faArrowUp} color="black" style={{marginLeft:'auto'}} size={30}  />
+            </TouchableOpacity>
+          )}
+          </View> 
+        
+      
+    </TouchableOpacity>
+    {expandedItem === item.ticker && (
+      <>
+      <View style={{flex:1,padding:10}}>
+       <Text style={styles.bold}>{title}</Text> 
+      
+       <Text style={styles.smallbold}>{lorem}</Text>  
+       </View> 
+       </>
+    )}
     </View>
   );
-  console.log(searchQuery);
-
-  /*
-  const toggleSearchBar = () => {
-    setShowSearchBar(!showSearchBar);
+  
+  const navigation= useNavigation();
+  const handleSingleClick = (item) => {
+    console.log(`Single click on ${item.ticker}`);
+    navigation.navigate('Description',{item})
   };
-
-  {sheetRef.current && sheetRef.current.index === 1 && <SearchBar />}
-  */
-
+  
+  const handleLongPress = (item) => {
+    console.log(`Long press on ${item.ticker}`);
+    setExpandedItem((prevItem) => prevItem === item.ticker ? null : item.ticker);
+  };
+  
   return (
     <View style={styles.container}>
       <Button
         title="Open Bottom Sheet"
         onPress={() => sheetRef.current.snapToIndex(0)}
       />
-
+      
+      <SwipeToBuyButton/>
+  
       <BottomSheet
         ref={sheetRef}
         index={0}
         snapPoints={snapPoints}
-        enablePanDownToClose={true}
-        onChange={handleSheetChange}>
-
-
+        enablePanDownToClose={true}>
+  
+          {/*Search bar*/}
         <View style={styles.searchcontainer}>
           <TouchableOpacity style={styles.button}>
-            <FontAwesomeIcon icon={faSearch} color="grey" style={styles.icon}  />
+            <FontAwesomeIcon icon={faSearch} color="grey" style={styles.icon} />
           </TouchableOpacity>
-          <TextInput style={styles.input} placeholder="Search for Stocks" onChangeText={handleSearchChange}/>
+          <TextInput
+            style={styles.input}
+            placeholder="Search for Stocks"
+            onChangeText={handleSearchChange}
+          />
         </View>
-
-        
+  
         {searchQuery === '' && (
-            <>
-          <BottomSheetFlatList
-            data={currentStocks}
-            renderItem={renderItem}
-            keyExtractor={item => item.ticker}
-            contentContainerStyle={styles.bottomSheetContent}
-          />
+          <>
+            <BottomSheetFlatList
+              data={currentStocks}
+              renderItem={renderItem}
+              keyExtractor={item => item.ticker}
+              contentContainerStyle={styles.bottomSheetContent}
+            />
+  
+            <View style={styles.pagination}>
+              <Button
+                title="Previous"
+                onPress={handlePrevPage}
+                disabled={currentPage === 0}
+              />
+              <Text>
+                Page {currentPage + 1} of {totalPages}
+              </Text>
+              <Button
+                title="Next"
+                onPress={handleNextPage}
+                disabled={currentPage === totalPages - 1}
+              />
+            </View>
+          </>
+        )}
+  
        
-
-        <View style={styles.pagination}>
-          <Button
-            title="Previous"
-            onPress={handlePrevPage}
-            disabled={currentPage === 0}
-          />
-          <Text>
-            Page {currentPage + 1} of {totalPages}
-          </Text>
-          <Button
-            title="Next"
-            onPress={handleNextPage}
-            disabled={currentPage === totalPages - 1}
-          />
-        </View>
-        </> )}
+        
       </BottomSheet>
     </View>
   );
-};
+}  
 
 const styles = StyleSheet.create({
   container: {
@@ -215,13 +235,25 @@ const styles = StyleSheet.create({
   button: {
     margin: 10,
   },
+  bold: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color:'black'
+  },
+  smallbold: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color:'black'
+  },
+  
 
   item: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    
   },
   logoContainer: {
     width: 80, // Adjust the width as needed
@@ -258,3 +290,33 @@ const styles = StyleSheet.create({
 });
 
 export default StockList;
+
+
+ {/*searchQuery !== '' && (
+          <>
+        <BottomSheetFlatList
+          data={currentStocks}
+          renderItem={renderItem}
+          keyExtractor={item => item.ticker}
+          contentContainerStyle={styles.bottomSheetContent}
+        />
+        <View style={styles.pagination}>
+          <Button
+            title="Previous"
+            onPress={handlePrevPage}
+            disabled={currentPage === 0}
+          />
+          <Text>
+            Page {currentPage + 1} of {totalPages}
+          </Text>
+          <Button
+            title="Next"
+            onPress={handleNextPage}
+            disabled={currentPage === totalPages - 1}
+          />
+        </View>
+          </>
+        )*/}
+        {/*
+        
+        */}

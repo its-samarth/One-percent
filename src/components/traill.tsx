@@ -1,21 +1,43 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import SearchBar from './SearchBar'
+import React from 'react';
+import { View, Button } from 'react-native';
+import notifee from '@notifee/react-native';
 
-const Traill = async () => {
-   
-    
+function Screen() {
   return (
     <View>
-      <Text>traill</Text>
-      <FontAwesomeIcon icon={faUser} />
-      <SearchBar />
+      <Button title="Display Notification" onPress={() => {}} />
     </View>
-  )
+  );
 }
+function Screen() {
+  async function onDisplayNotification() {
+    // Request permissions (required for iOS)
+    await notifee.requestPermission()
 
-export default Traill
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
 
-const styles = StyleSheet.create({})
+    // Display a notification
+    await notifee.displayNotification({
+      title: 'Notification Title',
+      body: 'Main body content of the notification',
+      android: {
+        channelId,
+        smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
+        // pressAction is needed if you want the notification to open the app when pressed
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+  }
+
+  return (
+    <View>
+      <Button title="Display Notification" onPress={() => onDisplayNotification()} />
+    </View>
+  );
+}
