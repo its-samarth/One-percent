@@ -6,9 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowRight, faCheck, faRotateRight, faTimes } from '@fortawesome/free-solid-svg-icons';
 import notifee from '@notifee/react-native'; // Import Notifee
 
-const SwipeToBuyButton = (Stockticker:any) => {
+const SwipeToBuyButton = (Stockticker) => {
   const translateX = useSharedValue(0);
-  const buttonWidth = 300;
+  const buttonWidth = 320;
   const releaseThreshold = 0.7; // 70% threshold
   const [buttonText, setButtonText] = useState('Swipe to Buy');
   const [buttonReleased, setButtonReleased] = useState(false);
@@ -54,29 +54,38 @@ const SwipeToBuyButton = (Stockticker:any) => {
   };
 
  
-  async function onDisplayNotification() {
+  async function onDisplayNotification(ticker) {
+    await notifee.requestPermission();
   
-    await notifee.requestPermission()
-
     const channelId = await notifee.createChannel({
       id: 'default',
       name: 'Default Channel',
     });
-    
-    console.log(Stockticker);
-    
+  
     await notifee.displayNotification({
       title: 'Stock Purchased',
-      body: 'Your Purchase Order for ${Stock Ticket} is completed',
+      body: `Your Purchase Order for ${ticker} is completed`,
       android: {
         channelId,
-     
         pressAction: {
           id: 'default',
         },
       },
     });
   }
+  
+  const displayNotifications = async () => {
+    if (buttonReleased) {
+    const stockTickers = Stockticker.ticker;
+  
+    for (const stock of stockTickers) {
+      await onDisplayNotification(stock.ticker);
+    }
+  }
+  };
+  
+  // Call the function to display notifications
+  displayNotifications();
 
   return (
     <View style={buttonContainerStyle}>

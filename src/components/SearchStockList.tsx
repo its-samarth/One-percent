@@ -5,7 +5,7 @@ import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import CompanyLogo from './CompanyLogo';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowUp, faCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack/types';
 
@@ -84,12 +84,21 @@ const renderItem = ({ item }: { item: any }) => (
       <View style={styles.textContainer}>
         <Text style={styles.ticker}>{item.ticker}</Text>
         <Text style={styles.name}>{item.name}</Text>
+        
+        <View style={{flexDirection:'row'}}>
         <Text style={styles.price}>Price: ${item.price}</Text>
+        {item.change_percent >= 0 ? (
+              <FontAwesomeIcon icon={faArrowUp} color="green" size={30}  />
+            ) : (
+              <FontAwesomeIcon icon={faArrowDown} color="red" size={30}  />
+            )}
+        <Text style={styles.percent}>{item.change_percent.toFixed(2)}%</Text>
+        </View>
         </View>
        <View>
        {expandedItem === item.symbol && (
         <TouchableOpacity onPress={() => handleLongPress(item)}>
-            <FontAwesomeIcon icon={faArrowUp} color="black" style={{marginLeft:'auto'}} size={30}  />
+            <FontAwesomeIcon icon={faCircleXmark} color="black" style={{marginLeft:'auto'}} size={30}  />
             </TouchableOpacity>
           )}
           </View> 
@@ -186,7 +195,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
   },
-  
+  percent:{
+    fontWeight:'normal',
+    fontSize:18,
+    color:'green'
+  },
   pagination: {
     flexDirection: 'row',
     justifyContent: 'space-between',
