@@ -8,11 +8,16 @@ export const login = createAsyncThunk('auth/login', async ({ username, password 
     body: JSON.stringify({
       username,
       password,
-   
     }),
   });
   const data = await response.json();
   return data;
+});
+
+// Async thunk for logout
+export const logout = createAsyncThunk('auth/logout', async () => {
+  // Here you can add any API call if needed for logout
+  return; // No data to return for this example
 });
 
 const loginSlice = createSlice({
@@ -35,6 +40,11 @@ const loginSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+        state.status = 'idle';
+        state.error = null;
       });
   },
 });

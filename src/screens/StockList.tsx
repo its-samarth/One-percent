@@ -18,6 +18,7 @@ import {
   faArrowDown,
   faArrowUp,
   faCircleXmark,
+  faPowerOff,
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 import {fetchMarketTrends} from '../api-handlers/api';
@@ -27,6 +28,8 @@ import {useNavigation} from '@react-navigation/native';
 import _ from 'lodash';
 import {NativeStackNavigationProp} from 'react-native-screens/lib/typescript/native-stack/types';
 import SearchStockList from './SearchStockList';
+import { useDispatch } from 'react-redux';
+import { logout } from '../redux/LoginSlice';
 
 const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 const ITEMS_PER_PAGE = 5;
@@ -44,6 +47,14 @@ const StockList = () => {
   const [searchedStocks, setSearchedStocks] = useState([]);
   const [expandedItem, setExpandedItem] = useState(null);
   const [debouncedQuery, setDebouncedQuery] = useState('');
+  const dispatch = useDispatch();
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const handleLogout = () => {
+    dispatch(logout());
+    navigation.replace('Login')
+    console.log("logout successful");
+    
+  };
 
   const sheetRef = useRef(null);
   useEffect(() => {
@@ -163,7 +174,7 @@ const StockList = () => {
     </View>
   );
 
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+ 
   const handleSingleClick = (item: any) => {
     console.log(`Single click on ${item.ticker}`);
     navigation.navigate('Description', {item});
@@ -186,9 +197,23 @@ const StockList = () => {
           borderColor: '#fff5d1',
           padding: 10,
           alignItems: 'center',
+          marginBottom:10
         }}>
         <Text style={{color: 'white', fontSize: 18}}>Open Bottom Sheet</Text>
       </TouchableOpacity>
+
+
+        <TouchableOpacity onPress={handleLogout}  style={{
+          backgroundColor: '#fff5d1',
+          borderRadius: 20,
+          borderColor: '#fff5d1',
+          padding: 10,
+          alignItems: 'center',
+         
+        }}>
+          <FontAwesomeIcon icon={faPowerOff} size={32}/>
+          <Text style={{color: 'black', fontSize: 18}}>This is a logout button</Text>
+        </TouchableOpacity>
 
       <BottomSheet
         ref={sheetRef}
