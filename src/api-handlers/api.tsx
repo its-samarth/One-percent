@@ -2,7 +2,7 @@ export async function fetchMarketTrends() {
     const options = {
       method: 'GET',
       headers: {
-        'X-RapidAPI-Key': '0e26da93b6msh66d4dda36d76120p117fbfjsn047d9d1b9c8f',
+        'X-RapidAPI-Key': 'e800d0abebmsh45c4ccddd74894dp120387jsne3721ec1436f',
         'X-RapidAPI-Host': 'real-time-finance-data.p.rapidapi.com'
       }
     };
@@ -30,7 +30,7 @@ export async function fetchMarketTrends() {
     const options = {
       method: 'GET',
       headers: {
-        'X-RapidAPI-Key': '0e26da93b6msh66d4dda36d76120p117fbfjsn047d9d1b9c8f',
+        'X-RapidAPI-Key': 'e800d0abebmsh45c4ccddd74894dp120387jsne3721ec1436f',
         'X-RapidAPI-Host': 'real-time-finance-data.p.rapidapi.com'
       }
     };

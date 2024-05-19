@@ -1,8 +1,9 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
 
 >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+# Screenshots
+![React Native Logo](https://reactnative.dev/img/header_logo.svg)
 
 ## Step 1: Start the Metro Server
 
@@ -11,11 +12,11 @@ First, you will need to start **Metro**, the JavaScript _bundler_ that ships _wi
 To start Metro, run the following command from the _root_ of your React Native project:
 
 ```bash
+# Installation
+npm install
+
 # using npm
 npm start
-
-# OR using Yarn
-yarn start
 ```
 
 ## Step 2: Start your Application
@@ -46,34 +47,25 @@ If everything is set up _correctly_, you should see your new app running in your
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
-## Step 3: Modifying your App
 
-Now that you have successfully run the app, let's modify it.
+# TypeScript Integration
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+This project makes extensive use of TypeScript to ensure type safety and better developer experience. By using TypeScript, subsequent builds are faster as the type-checking happens during development.
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+# Redux and Mock API for State Management
+## Login and Logout
+We've implemented a mock API to manage the login and logout state using Redux. The login and logout actions are handled by async thunks to mimic asynchronous API calls, providing a realistic structure for handling authentication.
 
-## Congratulations! :tada:
+## Orders Management
+Redux is also used for adding and deleting orders. This ensures that the state management is consistent and predictable throughout the application.
 
-You've successfully run and modified your React Native App. :partying_face:
+# Company Images with IEX Cloud
+We use the IEX Cloud API to fetch images of companies. This enhances the visual appeal of the application by displaying relevant company logos and images.
 
-### Now what?
+>**Highlight**:  The API has a particular limit of requests allowed, so if you get some error, you might just want to check/change your API secret keys.
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+# Optimizing Search Queries with Lodash
+To improve the performance of search queries, we use Lodash. Lodash provides utility functions for common programming tasks, making our search functionality more efficient and optimized.
 
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+#  Pagination
+We've implemented pagination to manage large datasets effectively. This ensures that the application remains performant and user-friendly, even when dealing with a significant amount of data.
