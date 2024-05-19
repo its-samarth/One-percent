@@ -10,7 +10,7 @@ const SplashScreen = () => {
 
   useEffect(() => {
     setTimeout(() => {
-        navigation.replace('List' as never);// Navigate to the main screen
+        navigation.replace('Login' as never);// Navigate to the main screen
       console.log('Navigate to main screen');
     }, 2000);
   }, [navigation]);

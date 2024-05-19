@@ -4,6 +4,8 @@ import StockList from '../screens/StockList';
 
 import DescriptionScreen from '../screens/DescriptionScreen';
 import OrdersScreen from '../screens/OrdersScreen';
+import Login from '../screens/Login';
+
 
 
 const Stack = createStackNavigator();
@@ -14,6 +16,7 @@ export default function MyStack() {
         headerShown: false, 
       }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="List" component={StockList} />
         <Stack.Screen name="Description" component={DescriptionScreen} />
         <Stack.Screen name="Orders" component={OrdersScreen} />
